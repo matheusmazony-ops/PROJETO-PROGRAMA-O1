@@ -1,0 +1,98 @@
+#include "hashtable.h"
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+// ARQUIVO PARA CRIAR, LER E PREENCHER A TABELA HASH //
+
+Tabela_hash* criar_tabela() {
+    Tabela_hash *tabela = (Tabela_hash*) malloc(sizeof(Tabela_hash));
+
+    if (tabela != NULL) {
+        for (int i = 0; i < tam_tabela; i++) {
+            tabela->tabela_hash[i] = NULL;
+        }
+    }
+    return tabela; // Retorna a tabela criada ou NULL se falhar a alocação
+}
+
+int funcao_hash(const char *numero_cartao) {
+    unsigned int codigo = 0;
+    int posicao_numero_cartao = 0;
+
+    while (numero_cartao[posicao_numero_cartao] != '\0') {
+        codigo = (unsigned char) numero_cartao[posicao_numero_cartao] + 31 * codigo;
+        posicao_numero_cartao++;
+    }
+
+    return codigo % tam_tabela;
+}
+
+Tabela_hash* ler_e_preencher_tabela(FILE *arquivocsv, Tabela_hash* tabela) {
+    if (arquivocsv == NULL || tabela == NULL) return tabela;
+
+    long data;
+    char numero_cartao[32];
+    short categoria;
+    float valor;
+    char genero;
+    double latitude_residencia;
+    double longitude_residencia;
+    double latitude_compra;
+    double longitude_compra;
+
+    char cabecalho[100];
+    // O '\n' no final limpa a quebra de linha do buffer
+    fscanf(arquivocsv, "%[^\n]\n", cabecalho);
+
+    while (fscanf(arquivocsv, " %ld,%31[^,],%hd,%f ,%c,%lf,%lf,%lf,%lf",
+                  &data,
+                  numero_cartao,
+                  &categoria,
+                  &valor,
+                  &genero,
+                  &latitude_residencia,
+                  &longitude_residencia,
+                  &latitude_compra,
+                  &longitude_compra) == 9) {
+
+        NoTransacao *novo = (NoTransacao*) malloc(sizeof(NoTransacao));
+
+        if (novo == NULL) {
+            puts("Erro de memória ao alocar nó!");
+            return tabela;
+        }
+
+        novo->data = data;
+        strcpy(novo->numero_cartao, numero_cartao);
+        novo->categoria = categoria;
+        novo->valor = valor;
+        novo->genero = genero;
+        novo->latitude_residencia = latitude_residencia;
+        novo->longitude_residencia = longitude_residencia;
+        novo->latitude_compra = latitude_compra;
+        novo->longitude_compra = longitude_compra;
+
+        int indice = funcao_hash(numero_cartao);
+
+        novo->proximo = tabela->tabela_hash[indice];
+        tabela->tabela_hash[indice] = novo;
+    }
+
+    return tabela;
+}
+
+void liberar_tabela(Tabela_hash *tabela) {
+    if (tabela == NULL) return;
+
+    for (int i = 0; i < tam_tabela; i++) {
+        NoTransacao *atual = tabela->tabela_hash[i];
+        while (atual != NULL) {
+            NoTransacao *proximo = atual->proximo;
+            free(atual);
+            atual = proximo;
+        }
+    }
+
+    free(tabela);
+}
