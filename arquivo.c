@@ -56,9 +56,10 @@ void preencher_arquivo(Tabela_hash *tabela,char numeros_cartoes[tam_tabela][50],
         
         int gaveta = funcao_hash (numeros_cartoes[i]) ;
 
-        Tabela_hash *atual=tabela->tabela_hash[gaveta];
+        NoTransacao *atual=tabela->tabela_hash[gaveta];
         
         while(atual!=NULL){
+            
                 
 
         }
