@@ -43,3 +43,31 @@ void criar_arquivos(char numeros_cartoes[tam_tabela][50],int quantidade_cartoes)
     }
 }
 
+void preencher_arquivo(Tabela_hash *tabela,char numeros_cartoes[tam_tabela][50],int quantidade_cartoes){
+    for (int i =0;i<quantidade_cartoes;i++){
+
+        FILE *ponteiro_temp;
+        ponteiro_temp=fopen(numeros_cartoes[i],"a");
+
+        if (ponteiro_temp==NULL){
+            printf("ERRO AO ABRIR ARQUIVO DE NOME '%s'",numeros_cartoes[i]);
+            continue;
+        }
+        
+        int gaveta = funcao_hash (numeros_cartoes[i]) ;
+
+        Tabela_hash *atual=tabela->tabela_hash[gaveta];
+        
+        while(atual!=NULL){
+                
+
+        }
+
+
+        
+
+    }
+
+}
+
+
