@@ -6,34 +6,49 @@
 
 
 int main(){
-    FILE *arquivocsv = fopen("1_jan2019.csv","r");
 
-    if (arquivocsv == NULL){
-        printf("Erro ao abrir o arquivo!");
-        return 0;
-    }
     Tabela_hash *tabela = criar_tabela();
 
-    if (tabela != NULL){
-        ler_e_preencher_tabela(arquivocsv, tabela);
-    } else{
-        printf("Erro ao alocar memoria");
+    if (tabela==NULL){
+        printf("Erro ao alocar a tabela hash!\n");
+        return EXIT_FAILURE;
     }
-
-
-    ler_e_preencher_tabela(arquivocsv,tabela);
+    
+    char arquivos_lidos[tam_tabela][50];
+    int quantidade_arquivos_lidos=0;
 
     char numeros_cartoes[tam_tabela][50];
     int quantidade_cartoes=0;
 
-    ler_numeros_cartoes(tabela,numeros_cartoes,&quantidade_cartoes);
+    int user;
 
-    for (int i=0;i<quantidade_cartoes;i++){
-        printf("Cartao [%d] : %s\n",i,numeros_cartoes[i]);
-    }
+    do {
+        user=menu();
+        switch(user){
+            case 0:
+                printf("\nPrograma encerrado!\n\n");
+                break;
+            
+            case 1:
+                ler_arquivo_e_preencher_tabela(tabela,&quantidade_arquivos_lidos,arquivos_lidos);
 
-    criar_arquivos(numeros_cartoes,quantidade_cartoes);
-    
+                ler_numeros_cartoes(tabela,numeros_cartoes,&quantidade_cartoes);
+                
+                criar_arquivos(numeros_cartoes,quantidade_cartoes);
+                
+                /*for (int i=0;i<quantidade_cartoes;i++){
+                        printf("Cartao [%d] : %s\n",i,numeros_cartoes[i]);
+                    }
+                */ 
+                break;
+            
+            default:
+                printf("\nOpcao invalida! Digite novamente!\n");
+                break;
+        }
+        
+    } while(user!=0);
+
     return 0;
 
 }

@@ -26,7 +26,7 @@ typedef struct{
 
 Tabela_hash* criar_tabela(void);
 
-Tabela_hash* ler_e_preencher_tabela(FILE *arquivocsv, Tabela_hash* tabela);
+Tabela_hash* ler_arquivo_e_preencher_tabela(Tabela_hash* tabela,int *quantidade_arquivos_lidos,char arquivos_lidos[tam_tabela][50]);
 
 int funcao_hash(const char *numero_cartao);
 

@@ -28,8 +28,32 @@ int funcao_hash(const char *numero_cartao) {
     return codigo % tam_tabela;
 }
 
-Tabela_hash* ler_e_preencher_tabela(FILE *arquivocsv, Tabela_hash* tabela) {
-    if (arquivocsv == NULL || tabela == NULL) return tabela;
+Tabela_hash* ler_arquivo_e_preencher_tabela(Tabela_hash* tabela,int *quantidade_cartoes_lidos,char arquivos_lidos[tam_tabela][50]) {
+    
+    printf("\nDigite o nome do arquivo que deseja ler (*OBS:Apenas o nome , sem o seu formato): ");
+    scanf("%s",arquivos_lidos[*quantidade_cartoes_lidos]);
+
+    char arquivo_lido_temp[50];
+    snprintf(arquivo_lido_temp,sizeof(arquivo_lido_temp),"%s.csv",arquivos_lidos[*quantidade_cartoes_lidos]);
+
+    for (int i=0;i<*quantidade_cartoes_lidos;i++){
+        if (strcmp(arquivos_lidos[i],arquivo_lido_temp)==0){
+            printf("\nO arquivo ja foi lido anteriormente!\n");
+            return tabela;
+        }
+    }
+
+    strcpy(arquivos_lidos[*quantidade_cartoes_lidos],arquivo_lido_temp);
+
+    FILE *arquivocsv=fopen(arquivo_lido_temp,"r");
+
+    if (arquivocsv==NULL){
+        printf("\nErro ao abrir o arquivo , verifique se o nome do arquivo esta correto!\n");
+        return tabela;
+    }
+
+
+    (*quantidade_cartoes_lidos)++;
 
     long data;
     char numero_cartao[32];
@@ -78,6 +102,8 @@ Tabela_hash* ler_e_preencher_tabela(FILE *arquivocsv, Tabela_hash* tabela) {
         novo->proximo = tabela->tabela_hash[indice];
         tabela->tabela_hash[indice] = novo;
     }
+
+    fclose(arquivocsv);
 
     return tabela;
 }

@@ -3,7 +3,7 @@
 
 #include "hashtable.h"
 
-
+int menu();
 
 
 
