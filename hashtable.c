@@ -108,6 +108,21 @@ Tabela_hash* ler_arquivo_e_preencher_tabela(Tabela_hash* tabela,int *quantidade_
     return tabela;
 }
 
+void ordenar_gavetas_tabela_hash(Tabela_hash *tabela,char numeros_cartoes[tam_tabela][50],int quantidade_cartoes){
+    NoTransacao* atual;
+
+    for (int i = 0; i<quantidade_cartoes; i++){
+        int gaveta= funcao_hash(numeros_cartoes[i]);
+        
+        atual=tabela->tabela_hash[i];
+
+        while(atual!=NULL){
+            
+        }
+    }
+
+}
+
 void liberar_tabela(Tabela_hash *tabela) {
     if (tabela == NULL) return;
 
