@@ -30,6 +30,6 @@ Tabela_hash* ler_arquivo_e_preencher_tabela(Tabela_hash* tabela,int *quantidade_
 
 int funcao_hash(const char *numero_cartao);
 
-void liberar_memoria(Tabela_hash *tabela);
+void liberar_tabela(Tabela_hash *tabela);
 
 #endif

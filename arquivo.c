@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stdint.h>
+#include <math.h>
 
 // ARQUIVO PARA LER A TABELA HASH E ARMAZENAR OS CARTÕES NOS DEVIDOS ARQUIVOS //
 
@@ -60,15 +62,14 @@ void preencher_arquivos(Tabela_hash *tabela,char numeros_cartoes[tam_tabela][50]
         NoTransacao *atual=tabela->tabela_hash[gaveta];
         
         while(atual!=NULL){
-            DataHora numero_temp= epoch_para_data(atual->data);
-
-            
-            aplicar_epoch(numero_epoch,arquivo_temp);
-            
-            
-                
-
+            if (strcmp(atual->numero_cartao,numeros_cartoes[i])==0){
+                epoch_para_data(atual->data);
+                aplicar_epoch_no_arquivo(atual->data,arquivo_temp);
+            } else{
+                atual=atual->proximo;
+            }
         }
+        fclose(arquivo_temp);
 
 
         

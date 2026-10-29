@@ -49,6 +49,8 @@ int main(){
         
     } while(user!=0);
 
+    liberar_tabela(tabela);
+
     return 0;
 
 }

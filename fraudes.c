@@ -4,6 +4,9 @@
 #include <stdlib.h>
 #include <time.h>
 #include <stdint.h> 
+#include <math.h>
+
+
 
 // ARQUIVOS PARA VERIFICACOES DE FRAUDES NO MOMENTO DE PREENCHER OS ARQUIVOS DOS CARTOES
 
@@ -21,9 +24,10 @@ void obter_mes_ano(long epoch_time, int *mes, int *ano){
 
 }
 
-// FUNCAO TRANSFORMAR NUMERO EPOCH EM DATA
+
 
 DataHora epoch_para_data(int64_t epoch){
+    // FUNCAO TRANSFORMAR NUMERO EPOCH EM DATA
     DataHora resultado;
 
     /* ---------- PASSO 1: separar dias e segundos ---------- */
@@ -92,16 +96,46 @@ DataHora epoch_para_data(int64_t epoch){
     return resultado;
 }
 
-void aplicar_epoch(DataHora epoch_para_data(int64_t),FILE *arquivo_temp){
+void aplicar_epoch_no_arquivo(int64_t epoch ,FILE *arquivo_temp){
+    //FUNCAO PARA APLICAR AS DATAS NO ARQUIVO DO CARTAO 
 
-    int64_t epoch = ;
-    DataHora data = epoch_para_data(epoch);
+    DataHora resultado = epoch_para_data(epoch);
 
     fprintf(arquivo_temp,"%04lld-%02d-%02d %02d:%02d:%02d (UTC) ",
-           (long long)data.ano, data.mes, data.dia,
-           data.hora, data.minuto, data.segundo);
+           (long long)resultado.ano, resultado.mes, resultado.dia,
+           resultado.hora, resultado.minuto, resultado.segundo);
 
-    return 0;
 }
 
+void verificar_fraude_tipo_C(NoTransacao *atual,FILE *arquivo_temp){
+    // FUNCAO PARA VERIFICAR FRAUDE SE A DISTANCIA ENTRE COMPRA FOR MAIOR QUE 78KM
+    double raio_terra = 6371.0;
 
+    double latitude_residencia = conversao_em_radianos(atual->latitude_residencia);
+    double longitude_residencia = conversao_em_radianos(atual->longitude_residencia);
+
+    double latitude_compra = conversao_em_radianos(atual->latitude_compra);
+    double longitude_compra = conversao_em_radianos(atual->longitude_compra);
+
+    double diferenca_latitude = latitude_compra-latitude_residencia;
+    double diferenca_longitude = longitude_compra-longitude_residencia;
+
+    double fator_abertura_angular = sin(diferenca_latitude / 2.0) * sin(diferenca_latitude / 2.0) +
+                              cos (latitude_residencia) * cos(latitude_compra) *
+                              sin(diferenca_longitude / 2.0) * sin(diferenca_longitude / 2.0);
+
+    double arco_da_curva = 2.0 * asin(sqrt(fator_abertura_angular));
+
+    double distancia_km= raio_terra * arco_da_curva;
+
+    if (distancia_km>78){
+        fprintf(arquivo_temp,"Y\n");
+    } else {
+        fprintf(arquivo_temp,"N\n");
+    }
+}
+
+double conversao_em_radianos(double graus) {
+    // FUNCAO PARA CONVERTER OS NUMEROS DE LATITUDE E LONGITUDE EM RADIANOS
+    return graus * (PI / 180.0);
+}
