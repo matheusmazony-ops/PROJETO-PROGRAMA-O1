@@ -43,7 +43,7 @@ void criar_arquivos(char numeros_cartoes[tam_tabela][50],int quantidade_cartoes)
     }
 }
 
-void preencher_arquivo(Tabela_hash *tabela,char numeros_cartoes[tam_tabela][50],int quantidade_cartoes){
+void preencher_arquivos(Tabela_hash *tabela,char numeros_cartoes[tam_tabela][50],int quantidade_cartoes){
     for (int i =0;i<quantidade_cartoes;i++){
 
         FILE *ponteiro_temp;
@@ -59,6 +59,7 @@ void preencher_arquivo(Tabela_hash *tabela,char numeros_cartoes[tam_tabela][50],
         NoTransacao *atual=tabela->tabela_hash[gaveta];
         
         while(atual!=NULL){
+            
             
                 
 
