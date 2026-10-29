@@ -1,4 +1,5 @@
 #include "arquivo.h"
+#include "fraudes.h"
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -46,10 +47,10 @@ void criar_arquivos(char numeros_cartoes[tam_tabela][50],int quantidade_cartoes)
 void preencher_arquivos(Tabela_hash *tabela,char numeros_cartoes[tam_tabela][50],int quantidade_cartoes){
     for (int i =0;i<quantidade_cartoes;i++){
 
-        FILE *ponteiro_temp;
-        ponteiro_temp=fopen(numeros_cartoes[i],"w");
+        FILE *arquivo_temp;
+        arquivo_temp=fopen(numeros_cartoes[i],"w");
 
-        if (ponteiro_temp==NULL){
+        if (arquivo_temp==NULL){
             printf("ERRO AO ABRIR ARQUIVO DE NOME '%s'",numeros_cartoes[i]);
             continue;
         }
@@ -59,6 +60,10 @@ void preencher_arquivos(Tabela_hash *tabela,char numeros_cartoes[tam_tabela][50]
         NoTransacao *atual=tabela->tabela_hash[gaveta];
         
         while(atual!=NULL){
+            DataHora numero_temp= epoch_para_data(atual->data);
+
+            
+            aplicar_epoch(numero_epoch,arquivo_temp);
             
             
                 

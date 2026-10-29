@@ -3,9 +3,6 @@
 
 #include "hashtable.h"
 
-
-
-
 void ler_numeros_cartoes(Tabela_hash *tabela,char numeros_cartoes[tam_tabela][50],int *quantidade_cartoes);
 
 void criar_arquivos(char numeros_cartoes[tam_tabela][50],int quantidade_cartoes);
