@@ -8,6 +8,6 @@ int menu(){
 
     printf("\n0-Encerrar programa\n1-Carregar arquivo\n2-Relatorio de cartao\n->");
     scanf("%d",&user);
-    
+
     return user;
 }
