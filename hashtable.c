@@ -30,7 +30,7 @@ int funcao_hash(const char *numero_cartao) {
 }
 
 Tabela_hash* ler_arquivo_e_preencher_tabela(Tabela_hash* tabela,int *quantidade_cartoes_lidos,char arquivos_lidos[tam_tabela][50]) {
-    
+
     printf("\nDigite o nome do arquivo que deseja ler (*OBS:Apenas o nome , sem o seu formato): ");
     scanf("%s",arquivos_lidos[*quantidade_cartoes_lidos]);
 
@@ -98,6 +98,9 @@ Tabela_hash* ler_arquivo_e_preencher_tabela(Tabela_hash* tabela,int *quantidade_
         novo->latitude_compra = latitude_compra;
         novo->longitude_compra = longitude_compra;
 
+        novo->fraude = 'N';
+        novo->tipo_fraude = 'X';
+
         int indice = funcao_hash(numero_cartao);
 
         novo->proximo = tabela->tabela_hash[indice];
@@ -114,12 +117,12 @@ void ordenar_gavetas_tabela_hash(Tabela_hash *tabela,char numeros_cartoes[tam_ta
     for (int i = 0; i < tam_tabela; i++){
 
         if (tabela->tabela_hash[i] != NULL){
-        
+
             NoTransacao *lista_ordenada = NULL; // CRIA A GAVETA TEMPORARIA VAZIA PARA A TABELA HASH
 
             NoTransacao *inicio=tabela->tabela_hash[i];
 
-            while(inicio!=NULL){   
+            while(inicio!=NULL){
                 NoTransacao *proximo=inicio->proximo;
                 NoTransacao *anterior = NULL;
                 NoTransacao *atual=lista_ordenada;

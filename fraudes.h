@@ -22,6 +22,8 @@ void aplicar_epoch_no_arquivo(int64_t epoch ,FILE *arquivo_temp);
 
 void obter_mes_ano(long epoch_time, int *mes, int *ano);
 
+void calcular_totais_fatura(NoTransacao *inicio, int mes, int ano, double *soma_fatura, int *qtd_fatura);
+
 DataHora epoch_para_data(int64_t epoch);
 
 void verificar_fraude_tipo_C(NoTransacao *atual,FILE *arquivo_temp);

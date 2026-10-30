@@ -3,9 +3,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include <time.h>
-#include <stdint.h> 
+#include <stdint.h>
 #include <math.h>
-
 
 
 // ARQUIVOS PARA VERIFICACOES DE FRAUDES NO MOMENTO DE PREENCHER OS ARQUIVOS DOS CARTOES
@@ -21,9 +20,65 @@ void obter_mes_ano(long epoch_time, int *mes, int *ano){
     } else{
         printf("Nao foi possivel converter o Epoch Time\n");
     }
-
 }
 
+
+void calcular_totais_fatura(NoTransacao *inicio, int mes, int ano, double *soma_fatura, int *qtd_fatura){
+    // Valor da memória apontada usando o operador de desreferenciação, nesse caso *
+    *soma_fatura = 0.0;
+    *qtd_fatura = 0;
+
+    NoTransacao *atual = inicio;
+    int mes_atual, ano_atual;
+
+    while(atual != NULL){
+        // transforma o Epoch Time em mês e ano
+        obter_mes_ano(atual->data, &mes_atual, &ano_atual);
+
+        // Filtra a transação que pertece a uma fatura específica, ignorando a transação de outros meses e anos
+        if(mes_atual == mes && ano_atual == ano){
+            *soma_fatura += atual->valor;
+            (*qtd_fatura)++;
+        }
+
+        atual = atual->proximo;
+    }
+}
+
+
+void verificar_fraude_tipo_B(NoTransacao *inicio, int mes, int ano){
+    double soma_fatura;
+    int qtd_fatura;
+
+    calcular_totais_fatura(inicio, mes, ano, &soma_fatura, &qtd_fatura);
+
+    if (qtd_fatura <= 1){
+        // Se essa condicao for aceita, o cliente fez 0 ou 1 compra no mês
+        return;
+    }
+
+    NoTransacao *atual = inicio;
+    int mes_atual, ano_atual;
+
+    while(atual != NULL){
+        obter_mes_ano(atual->data, &mes_atual, &ano_atual);
+
+        if(mes_atual == mes && ano_atual == ano){
+            // Encontrando o valor da média de outras transações
+            double soma_outras = soma_fatura - atual->valor;
+            int qtd_outras = qtd_fatura - 1;
+            double media_outras = soma_outras / qtd_outras;
+
+            if(atual->valor >= 3.0 * media_demais){
+                atual->fraude = 'Y';
+                atual->tipo_fraude = 'B';
+            }
+        }
+
+        atual = atual->proximo;
+    }
+
+}
 
 
 DataHora epoch_para_data(int64_t epoch){
@@ -96,8 +151,9 @@ DataHora epoch_para_data(int64_t epoch){
     return resultado;
 }
 
+
 void aplicar_epoch_no_arquivo(int64_t epoch ,FILE *arquivo_temp){
-    //FUNCAO PARA APLICAR AS DATAS NO ARQUIVO DO CARTAO 
+    //FUNCAO PARA APLICAR AS DATAS NO ARQUIVO DO CARTAO
 
     DataHora resultado = epoch_para_data(epoch);
 
