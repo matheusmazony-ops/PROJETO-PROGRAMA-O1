@@ -110,15 +110,39 @@ Tabela_hash* ler_arquivo_e_preencher_tabela(Tabela_hash* tabela,int *quantidade_
 }
 
 void ordenar_gavetas_tabela_hash(Tabela_hash *tabela,char numeros_cartoes[tam_tabela][50],int quantidade_cartoes){
-    NoTransacao* atual;
 
-    for (int i = 0; i<quantidade_cartoes; i++){
-        int gaveta= funcao_hash(numeros_cartoes[i]);
+    for (int i = 0; i < tam_tabela; i++){
+
+        if (tabela->tabela_hash[i] != NULL){
         
-        atual=tabela->tabela_hash[i];
+            NoTransacao *lista_ordenada = NULL; // CRIA A GAVETA TEMPORARIA VAZIA PARA A TABELA HASH
 
-        while(atual!=NULL){
-            
+            NoTransacao *inicio=tabela->tabela_hash[i];
+
+            while(inicio!=NULL){   
+                NoTransacao *proximo=inicio->proximo;
+                NoTransacao *anterior = NULL;
+                NoTransacao *atual=lista_ordenada;
+
+                while (atual!=NULL && atual->data <= inicio->data){
+                    anterior=atual;
+                    atual = atual -> proximo;
+                }
+
+                if (anterior==NULL){
+                    inicio->proximo = lista_ordenada;
+                    lista_ordenada = inicio;
+                } else{
+                    inicio -> proximo = atual;
+                    anterior -> proximo = inicio;
+                }
+                inicio = proximo;
+
+            }
+            tabela->tabela_hash[i] = lista_ordenada;
+        }
+        else{
+            continue;
         }
     }
 

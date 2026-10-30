@@ -65,6 +65,9 @@ void preencher_arquivos(Tabela_hash *tabela,char numeros_cartoes[tam_tabela][50]
             if (strcmp(atual->numero_cartao,numeros_cartoes[i])==0){
                 epoch_para_data(atual->data);
                 aplicar_epoch_no_arquivo(atual->data,arquivo_temp);
+
+                /* ULTIMA A VERIFICAR 
+                verificar_fraude_tipo_C(atual,arquivo_temp); */
             } else{
                 atual=atual->proximo;
             }
