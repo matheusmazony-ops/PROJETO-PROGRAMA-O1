@@ -63,13 +63,16 @@ void verificar_fraude_tipo_B(NoTransacao *inicio, int mes, int ano){
     while(atual != NULL){
         obter_mes_ano(atual->data, &mes_atual, &ano_atual);
 
+        // Verifica se a outra transação pertence a essa fatura
         if(mes_atual == mes && ano_atual == ano){
-            // Encontrando o valor da média de outras transações
+            // Soma das outras transações
             double soma_outras = soma_fatura - atual->valor;
+            // Contagem de outras transações
             int qtd_outras = qtd_fatura - 1;
+            // Média de outras transações
             double media_outras = soma_outras / qtd_outras;
 
-            if(atual->valor >= 3.0 * media_demais){
+            if(atual->valor >= 3.0 * media_outras){
                 atual->fraude = 'Y';
                 atual->tipo_fraude = 'B';
             }
@@ -77,7 +80,20 @@ void verificar_fraude_tipo_B(NoTransacao *inicio, int mes, int ano){
 
         atual = atual->proximo;
     }
+}
 
+
+void processar_todas_as_faturas_tipo_b(NoTransacao *inicio){
+    NoTransacao *atual = inicio;
+    int mes, ano;
+
+    while(atual != NULL){
+        obter_mes_ano(atual->data, &mes, &ano);
+
+        verificar_fraude_tipo_B(inicio, mes, ano);
+
+        atual = atual->proximo;
+    }
 }
 
 

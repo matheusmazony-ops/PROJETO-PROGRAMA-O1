@@ -10,26 +10,26 @@
 
 void ler_numeros_cartoes(Tabela_hash *tabela,char numeros_cartoes[tam_tabela][50],int *quantidade_cartoes){
     // FUNCAO QUE LER AS GAVETAS DA TABELA HASH PARA ARMAZENAR EM UMA MATRIZ OS NUMEROS DOS CARTOES
-    
+
     for (int i = 0 ; i < tam_tabela ; i++){
         if (tabela -> tabela_hash[i] != NULL){
             strcpy(numeros_cartoes[*quantidade_cartoes],tabela->tabela_hash[i]->numero_cartao);
             (*quantidade_cartoes)++;
         }
     }
-    
+
     if (*quantidade_cartoes > tam_tabela){
         printf("Ha mais cartoes do que a memoria permite!\nSó foram armazenados %d cartoes\n", (*quantidade_cartoes));
     }
 }
 
 void criar_arquivos(char numeros_cartoes[tam_tabela][50],int quantidade_cartoes){
-    // FUNCAO PARA CRIAR OS ARQUIVOS E DEIXAR NA MEMORIA DO DISCO 
+    // FUNCAO PARA CRIAR OS ARQUIVOS E DEIXAR NA MEMORIA DO DISCO
 
-    char nome_arquivo[30];
+    char nome_arquivo[60];
 
     for (int i = 0 ; i < quantidade_cartoes ; i++){
-        
+
         snprintf(nome_arquivo , sizeof(nome_arquivo) , "%s.csv" ,numeros_cartoes[i]);
 
         FILE *arquivo_criar;
@@ -42,43 +42,51 @@ void criar_arquivos(char numeros_cartoes[tam_tabela][50],int quantidade_cartoes)
         }
 
         fclose(arquivo_criar);
-        
+
     }
 }
 
 void preencher_arquivos(Tabela_hash *tabela,char numeros_cartoes[tam_tabela][50],int quantidade_cartoes){
     for (int i =0;i<quantidade_cartoes;i++){
 
+        char nome_arquivo[60];
+
+        // Conectar seu código com o seu arquivo de disco
+        snprintf(nome_arquivo, sizeof(nome_arquivo), "%s.csv", numeros_cartoes[i]);
+
         FILE *arquivo_temp;
-        arquivo_temp=fopen(numeros_cartoes[i],"w");
+        arquivo_temp=fopen(nome_arquivo, "w");
 
         if (arquivo_temp==NULL){
             printf("ERRO AO ABRIR ARQUIVO DE NOME '%s'",numeros_cartoes[i]);
             continue;
         }
-        
-        int gaveta = funcao_hash (numeros_cartoes[i]) ;
+
+        int gaveta = funcao_hash (numeros_cartoes[i]);
 
         NoTransacao *atual=tabela->tabela_hash[gaveta];
-        
+
+        if(atual != NULL){
+            processar_todas_as_faturas_tipo_b(atual);
+        }
+
         while(atual!=NULL){
             if (strcmp(atual->numero_cartao,numeros_cartoes[i])==0){
                 epoch_para_data(atual->data);
                 aplicar_epoch_no_arquivo(atual->data,arquivo_temp);
 
-                /* ULTIMA A VERIFICAR 
+                // Incluir, além da data, os arquivos CSV os valores e indicadores de fraudes
+                fprintf(arquivo_temp, "%.2f %c %c\n", atual->valor, atual->fraude, atual->tipo_fraude);
+
+                /* ULTIMA A VERIFICAR
                 verificar_fraude_tipo_C(atual,arquivo_temp); */
-            } else{
-                atual=atual->proximo;
-            }
         }
+
+        atual = atual->proximo;
+        }
+
         fclose(arquivo_temp);
-
-
-        
-
     }
-
 }
 
 
