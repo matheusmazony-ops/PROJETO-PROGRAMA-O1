@@ -16,8 +16,6 @@ typedef struct noTransacao{
     double longitude_residencia;
     double latitude_compra;
     double longitude_compra;
-    char fraude;
-    char tipo_fraude;
     struct noTransacao *proximo;
 } NoTransacao;
 

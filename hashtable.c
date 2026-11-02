@@ -98,9 +98,6 @@ Tabela_hash* ler_arquivo_e_preencher_tabela(Tabela_hash* tabela,int *quantidade_
         novo->latitude_compra = latitude_compra;
         novo->longitude_compra = longitude_compra;
 
-        novo->fraude = 'N';
-        novo->tipo_fraude = 'X';
-
         int indice = funcao_hash(numero_cartao);
 
         novo->proximo = tabela->tabela_hash[indice];

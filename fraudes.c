@@ -45,39 +45,34 @@ void calcular_totais_fatura(NoTransacao *inicio, int mes, int ano, double *soma_
     }
 }
 
-void verificar_fraude_tipo_A(NoTransacao *inicio, const char *numero_cartao){
-    NoTransacao *atual = inicio;
+void verificar_fraude_tipo_A(NoTransacao *inicio, NoTransacao *atual, const char *numero_cartao, FILE *arquivo_temp){
     int mes1, ano1, mes2, ano2;
+    obter_mes_ano(atual->data, &mes1, &ano1);
 
-    while(atual != NULL){
-        if(strcmp(atual->numero_cartao, numero_cartao) == 0){
-            // Declarando outro ponteiro para olhar outras transações na lista
-            NoTransacao *outro_atual = atual->proximo;
-            while(outro_atual != NULL){
-                if(strcmp(outro_atual->numero_cartao, numero_cartao) == 0){
-                    obter_mes_ano(atual->data, &mes1, &ano1);
-                    obter_mes_ano(outro_atual->data, &mes2, &ano2);
+    // Declarando outro ponteiro para olhar outras transações na lista
+    NoTransacao *outro_atual = inicio;
 
-                    if(mes1 == mes2 && ano1 == ano2){
-                        if(labs(outro_atual->data - atual->data) < 120){
-                            atual->fraude = 'Y';
-                            atual->tipo_fraude = 'A';
-                            // Também deve ser etiquetado pois ambas as transações tem uma suspeita de fraude
-                            outro_atual->fraude = 'Y';
-                            outro_atual->tipo_fraude = 'A';
-                        }
-                    }
+    while(outro_atual != NULL){
+        if(outro_atual != atual && strcmp(outro_atual->numero_cartao, numero_cartao) == 0){
+            obter_mes_ano(outro_atual->data, &mes2, &ano2);
+
+            if(mes1 == mes2 && ano1 == ano2){
+                if(labs(outro_atual->data - atual->data) < 120){
+                    fprintf(arquivo_temp, "Y,");
+                    return;
                 }
-
-                outro_atual = outro_atual->proximo;
             }
         }
-
-        atual = atual->proximo;
+        outro_atual = outro_atual->proximo;
     }
+
+    fprintf(arquivo_temp, "N,");
 }
 
-void verificar_fraude_tipo_B(NoTransacao *inicio, int mes, int ano){
+void verificar_fraude_tipo_B(NoTransacao *inicio, NoTransacao *atual, FILE *arquivo_temp){
+    int mes, ano;
+    obter_mes_ano(atual->data, &mes, &ano);
+
     double soma_fatura;
     int qtd_fatura;
 
@@ -85,32 +80,26 @@ void verificar_fraude_tipo_B(NoTransacao *inicio, int mes, int ano){
 
     if (qtd_fatura <= 1){
         // Se essa condicao for aceita, o cliente fez 0 ou 1 compra no mês
+        fprintf(arquivo_temp, "N,");
         return;
     }
 
-    NoTransacao *atual = inicio;
-    int mes_atual, ano_atual;
+    // Soma das outras transações
+    double soma_outras = soma_fatura - atual->valor;
+    // Contagem de outras transações
+    int qtd_outras = qtd_fatura - 1;
 
-    while(atual != NULL){
-        obter_mes_ano(atual->data, &mes_atual, &ano_atual);
+    if (qtd_outras > 0){
+        // Média de outras transações
+        double media_outras = soma_outras / qtd_outras;
 
-        // Verifica se a outra transação pertence a essa fatura
-        if(mes_atual == mes && ano_atual == ano){
-            // Soma das outras transações
-            double soma_outras = soma_fatura - atual->valor;
-            // Contagem de outras transações
-            int qtd_outras = qtd_fatura - 1;
-            // Média de outras transações
-            double media_outras = soma_outras / qtd_outras;
-
-            if(atual->valor >= 3.0 * media_outras){
-                atual->fraude = 'Y';
-                atual->tipo_fraude = 'B';
-            }
+        if(atual->valor >= 3.0 * media_outras){
+            fprintf(arquivo_temp, "Y,");
+            return;
         }
-
-        atual = atual->proximo;
     }
+
+    fprintf(arquivo_temp, "N,");
 }
 
 void verificar_fraude_tipo_C(NoTransacao *atual,FILE *arquivo_temp){
@@ -140,21 +129,6 @@ void verificar_fraude_tipo_C(NoTransacao *atual,FILE *arquivo_temp){
         fprintf(arquivo_temp,"N\n");
     }
 }
-
-
-void processar_todas_as_faturas_tipo_b(NoTransacao *inicio){
-    NoTransacao *atual = inicio;
-    int mes, ano;
-
-    while(atual != NULL){
-        obter_mes_ano(atual->data, &mes, &ano);
-
-        verificar_fraude_tipo_B(inicio, mes, ano);
-
-        atual = atual->proximo;
-    }
-}
-
 
 DataHora epoch_para_data(int64_t epoch){
     // FUNCAO TRANSFORMAR NUMERO EPOCH EM DATA

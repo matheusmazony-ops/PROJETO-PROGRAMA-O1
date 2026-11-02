@@ -64,24 +64,21 @@ void preencher_arquivos(Tabela_hash *tabela,char numeros_cartoes[tam_tabela][50]
 
         int gaveta = funcao_hash (numeros_cartoes[i]);
 
+        NoTransacao *inicio=tabela->tabela_hash[i];
         NoTransacao *atual=tabela->tabela_hash[gaveta];
-
-        void verificar_fraude_tipo_A(NoTransacao *inicio, const char *numero_cartao);
-
-        if(atual != NULL){
-            processar_todas_as_faturas_tipo_b(atual);
-        }
+        
 
         while(atual!=NULL){
             if (strcmp(atual->numero_cartao,numeros_cartoes[i])==0){
-                epoch_para_data(atual->data);
+                
                 aplicar_epoch_no_arquivo(atual->data,arquivo_temp);
 
-                // Incluir, além da data, os arquivos CSV os valores e indicadores de fraudes
-                fprintf(arquivo_temp, "%.2f %c %c\n", atual->valor, atual->fraude, atual->tipo_fraude);
+                fprintf(arquivo_temp,"%d,%.2f,", atual->categoria, atual->valor);
 
-                /* ULTIMA A VERIFICAR
-                verificar_fraude_tipo_C(atual,arquivo_temp); */
+                // Incluir, além da data , dos valores e categorias nos arquivos CSV , os valores e indicadores de fraudes
+                verificar_fraude_tipo_A(inicio,atual,numeros_cartoes[i],arquivo_temp);
+                verificar_fraude_tipo_B(inicio,atual,arquivo_temp);
+                verificar_fraude_tipo_C(atual,arquivo_temp); 
         }
 
         atual = atual->proximo;
