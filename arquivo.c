@@ -66,6 +66,8 @@ void preencher_arquivos(Tabela_hash *tabela,char numeros_cartoes[tam_tabela][50]
 
         NoTransacao *atual=tabela->tabela_hash[gaveta];
 
+        void verificar_fraude_tipo_A(NoTransacao *inicio, const char *numero_cartao);
+
         if(atual != NULL){
             processar_todas_as_faturas_tipo_b(atual);
         }

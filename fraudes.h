@@ -26,6 +26,8 @@ void calcular_totais_fatura(NoTransacao *inicio, int mes, int ano, double *soma_
 
 DataHora epoch_para_data(int64_t epoch);
 
+void verificar_fraude_tipo_A(NoTransacao *inicio, const char *numero_cartao);
+
 void verificar_fraude_tipo_B(NoTransacao *inicio, int mes, int ano);
 
 void verificar_fraude_tipo_C(NoTransacao *atual,FILE *arquivo_temp);

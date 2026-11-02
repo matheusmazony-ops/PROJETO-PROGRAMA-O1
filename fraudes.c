@@ -9,6 +9,40 @@
 
 // ARQUIVOS PARA VERIFICACOES DE FRAUDES NO MOMENTO DE PREENCHER OS ARQUIVOS DOS CARTOES
 
+
+void verificar_fraude_tipo_A(NoTransacao *inicio, const char *numero_cartao){
+    NoTransacao *atual = inicio;
+    int mes1, ano1, mes2, ano2;
+
+    while(atual != NULL){
+        if(strcmp(atual->numero_cartao, numero_cartao) == 0){
+            // Declarando outro ponteiro para olhar outras transações na lista
+            NoTransacao *outro_atual = atual->proximo;
+            while(outro_atual != NULL){
+                if(strcmp(outro_atual->numero_cartao, numero_cartao) == 0){
+                    obter_mes_ano(atual->data, &mes1, &ano1);
+                    obter_mes_ano(outro_atual->data, &mes2, &ano2);
+
+                    if(mes1 == mes2 && ano1 == ano2){
+                        if(labs(outro_atual->data - atual->data) < 120){
+                            atual->fraude = 'Y';
+                            atual->tipo_fraude = 'A';
+                            // Também deve ser etiquetado pois ambas as transações tem uma suspeita de fraude
+                            outro_atual->fraude = 'Y';
+                            outro_atual->tipo_fraude = 'A';
+                        }
+                    }
+                }
+
+                outro_atual = outro_atual->proximo;
+            }
+        }
+
+        atual = atual->proximo;
+    }
+}
+
+
 void obter_mes_ano(long epoch_time, int *mes, int *ano){
     time_t tempo_epoch = (time_t) epoch_time;
     struct tm *info = localtime(&tempo_epoch);
