@@ -36,6 +36,8 @@ int main(){
 
                 criar_arquivos(numeros_cartoes,quantidade_cartoes);
 
+                ordenar_gavetas_tabela_hash(tabela,numeros_cartoes,quantidade_cartoes);
+
                 preencher_arquivos(tabela, numeros_cartoes, quantidade_cartoes);
 
                 /*for (int i=0;i<quantidade_cartoes;i++){

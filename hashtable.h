@@ -34,4 +34,6 @@ int funcao_hash(const char *numero_cartao);
 
 void liberar_tabela(Tabela_hash *tabela);
 
+void ordenar_gavetas_tabela_hash(Tabela_hash *tabela,char numeros_cartoes[tam_tabela][50],int quantidade_cartoes);
+
 #endif

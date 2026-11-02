@@ -114,6 +114,8 @@ Tabela_hash* ler_arquivo_e_preencher_tabela(Tabela_hash* tabela,int *quantidade_
 
 void ordenar_gavetas_tabela_hash(Tabela_hash *tabela,char numeros_cartoes[tam_tabela][50],int quantidade_cartoes){
 
+    // FUNCAO PARA ORDENAR AS GAVETAS DA TABELA HASH PARA ATUALIZAR NO ARQUIVO
+
     for (int i = 0; i < tam_tabela; i++){
 
         if (tabela->tabela_hash[i] != NULL){
