@@ -45,6 +45,7 @@ void calcular_totais_fatura(NoTransacao *inicio, int mes, int ano, double *soma_
     }
 }
 
+
 void verificar_fraude_tipo_A(NoTransacao *inicio, NoTransacao *atual, const char *numero_cartao, FILE *arquivo_temp){
     int mes1, ano1, mes2, ano2;
     obter_mes_ano(atual->data, &mes1, &ano1);
@@ -68,6 +69,7 @@ void verificar_fraude_tipo_A(NoTransacao *inicio, NoTransacao *atual, const char
 
     fprintf(arquivo_temp, "N,");
 }
+
 
 void verificar_fraude_tipo_B(NoTransacao *inicio, NoTransacao *atual, FILE *arquivo_temp){
     int mes, ano;
@@ -102,6 +104,7 @@ void verificar_fraude_tipo_B(NoTransacao *inicio, NoTransacao *atual, FILE *arqu
     fprintf(arquivo_temp, "N,");
 }
 
+
 void verificar_fraude_tipo_C(NoTransacao *atual,FILE *arquivo_temp){
     // FUNCAO PARA VERIFICAR FRAUDE SE A DISTANCIA ENTRE COMPRA FOR MAIOR QUE 78KM
     double raio_terra = 6371.0;
@@ -129,6 +132,7 @@ void verificar_fraude_tipo_C(NoTransacao *atual,FILE *arquivo_temp){
         fprintf(arquivo_temp,"N\n");
     }
 }
+
 
 DataHora epoch_para_data(int64_t epoch){
     // FUNCAO TRANSFORMAR NUMERO EPOCH EM DATA
@@ -211,6 +215,7 @@ void aplicar_epoch_no_arquivo(int64_t epoch ,FILE *arquivo_temp){
            resultado.hora, resultado.minuto, resultado.segundo);
 
 }
+
 
 double conversao_em_radianos(double graus) {
     // FUNCAO PARA CONVERTER OS NUMEROS DE LATITUDE E LONGITUDE EM RADIANOS

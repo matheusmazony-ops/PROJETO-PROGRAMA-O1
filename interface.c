@@ -6,7 +6,10 @@
 int menu(){
     int user;
 
-    printf("\n0-Encerrar programa\n1-Carregar arquivo\n2-Relatorio de cartao\n->");
+    printf("\tMENU\n");
+    printf("--------------------\n");
+    printf("0-Encerrar programa\n1-Carregar arquivo\n2-Relatorio de cartao\n");
+    printf("--------------------\n-> ");
     scanf("%d",&user);
 
     return user;

@@ -28,7 +28,6 @@ int main(){
             case 0:
                 printf("\nPrograma encerrado!\n\n");
                 break;
-
             case 1:
                 ler_arquivo_e_preencher_tabela(tabela,&quantidade_arquivos_lidos,arquivos_lidos);
 
@@ -45,7 +44,6 @@ int main(){
                     }
                 */
                 break;
-
             default:
                 printf("\nOpcao invalida! Digite novamente!\n");
                 break;

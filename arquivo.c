@@ -23,6 +23,7 @@ void ler_numeros_cartoes(Tabela_hash *tabela,char numeros_cartoes[tam_tabela][50
     }
 }
 
+
 void criar_arquivos(char numeros_cartoes[tam_tabela][50],int quantidade_cartoes){
     // FUNCAO PARA CRIAR OS ARQUIVOS E DEIXAR NA MEMORIA DO DISCO
 
@@ -46,6 +47,7 @@ void criar_arquivos(char numeros_cartoes[tam_tabela][50],int quantidade_cartoes)
     }
 }
 
+
 void preencher_arquivos(Tabela_hash *tabela,char numeros_cartoes[tam_tabela][50],int quantidade_cartoes){
     for (int i =0;i<quantidade_cartoes;i++){
 
@@ -66,19 +68,19 @@ void preencher_arquivos(Tabela_hash *tabela,char numeros_cartoes[tam_tabela][50]
 
         NoTransacao *inicio=tabela->tabela_hash[i];
         NoTransacao *atual=tabela->tabela_hash[gaveta];
-        
+
 
         while(atual!=NULL){
             if (strcmp(atual->numero_cartao,numeros_cartoes[i])==0){
-                
+
                 aplicar_epoch_no_arquivo(atual->data,arquivo_temp);
 
                 fprintf(arquivo_temp,"%d,%.2f,", atual->categoria, atual->valor);
 
-                // Incluir, além da data , dos valores e categorias nos arquivos CSV , os valores e indicadores de fraudes
+                // Incluir, além da data , dos valores e categorias nos arquivos CSV , os valores e indicadores de fraudes dos tipos A, B e C
                 verificar_fraude_tipo_A(inicio,atual,numeros_cartoes[i],arquivo_temp);
                 verificar_fraude_tipo_B(inicio,atual,arquivo_temp);
-                verificar_fraude_tipo_C(atual,arquivo_temp); 
+                verificar_fraude_tipo_C(atual,arquivo_temp);
         }
 
         atual = atual->proximo;
@@ -86,8 +88,6 @@ void preencher_arquivos(Tabela_hash *tabela,char numeros_cartoes[tam_tabela][50]
 
         fclose(arquivo_temp);
     }
+
+    printf("\nArquivo lido com sucesso!\n\n");
 }
-
-
-
-
