@@ -49,10 +49,9 @@ Tabela_hash* ler_arquivo_e_preencher_tabela(Tabela_hash* tabela,int *quantidade_
     FILE *arquivocsv=fopen(arquivo_lido_temp,"r");
 
     if (arquivocsv==NULL){
-        printf("\nErro ao abrir o arquivo , verifique se o nome do arquivo esta correto!\n");
+        printf("\nErro ao abrir o arquivo, verifique se o nome do arquivo esta correto!\n\n");
         return tabela;
     }
-
 
     (*quantidade_cartoes_lidos)++;
 
@@ -103,6 +102,8 @@ Tabela_hash* ler_arquivo_e_preencher_tabela(Tabela_hash* tabela,int *quantidade_
         novo->proximo = tabela->tabela_hash[indice];
         tabela->tabela_hash[indice] = novo;
     }
+
+    printf("\nArquivo lido com sucesso!\n\n");
 
     fclose(arquivocsv);
 
