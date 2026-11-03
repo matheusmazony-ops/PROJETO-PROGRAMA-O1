@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define tam_tabela 17
+#define tam_tabela 1009
 
 typedef struct noTransacao{
     long data;

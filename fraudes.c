@@ -210,8 +210,8 @@ void aplicar_epoch_no_arquivo(int64_t epoch ,FILE *arquivo_temp){
 
     DataHora resultado = epoch_para_data(epoch);
 
-    fprintf(arquivo_temp,"%04lld-%02d-%02d %02d:%02d:%02d (UTC) ",
-           (long long)resultado.ano, resultado.mes, resultado.dia,
+    fprintf(arquivo_temp,"%04d-%02d-%02d %02d:%02d:%02d (UTC) ",
+           (int)resultado.ano, resultado.mes, resultado.dia,
            resultado.hora, resultado.minuto, resultado.segundo);
 
 }

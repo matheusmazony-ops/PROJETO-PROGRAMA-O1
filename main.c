@@ -44,6 +44,9 @@ int main(){
                     }
                 */
                 break;
+            case 2:
+                relatorio_cartao(tabela);
+                break;
             default:
                 printf("\nOpcao invalida! Digite novamente!\n");
                 break;
