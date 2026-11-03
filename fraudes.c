@@ -71,20 +71,25 @@ void verificar_fraude_tipo_A(NoTransacao *inicio, NoTransacao *atual, const char
 }
 
 
-void verificar_fraude_tipo_B(NoTransacao *inicio, NoTransacao *atual, FILE *arquivo_temp){
+void verificar_fraude_tipo_B(NoTransacao *inicio, NoTransacao *atual, int *mes_cache, int *ano_cache,
+                             double *soma_cache, int *qtd_cache, FILE *arquivo_temp){
     int mes, ano;
     obter_mes_ano(atual->data, &mes, &ano);
 
     double soma_fatura;
     int qtd_fatura;
 
-    calcular_totais_fatura(inicio, mes, ano, &soma_fatura, &qtd_fatura);
+    if (mes != *mes_cache || ano != *ano_cache) {
+        *mes_cache = mes;
+        *ano_cache = ano;
+        calcular_totais_fatura(inicio, mes, ano, soma_cache, qtd_cache);
+    }
 
     if (qtd_fatura <= 1){
         // Se essa condicao for aceita, o cliente fez 0 ou 1 compra no mês
         fprintf(arquivo_temp, "N,");
         return;
-    }
+    }   
 
     // Soma das outras transações
     double soma_outras = soma_fatura - atual->valor;

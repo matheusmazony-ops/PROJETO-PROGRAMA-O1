@@ -69,7 +69,14 @@ void preencher_arquivos(Tabela_hash *tabela,char numeros_cartoes[tam_tabela][50]
         NoTransacao *inicio=tabela->tabela_hash[i];
         NoTransacao *atual=tabela->tabela_hash[gaveta];
 
+        // VARIÁVEIS DE CACHE PARA A FRAUDE B (Reiniciam a cada cartão)
+        int mes_cache = -1;
+        int ano_cache = -1;
+        double soma_cache = 0.0;
+        int qtd_cache = 0;
 
+
+        // São variáveis temporárias para armazenar     
         while(atual!=NULL){
             if (strcmp(atual->numero_cartao,numeros_cartoes[i])==0){
 
@@ -79,7 +86,7 @@ void preencher_arquivos(Tabela_hash *tabela,char numeros_cartoes[tam_tabela][50]
 
                 // Incluir, além da data , dos valores e categorias nos arquivos CSV , os valores e indicadores de fraudes dos tipos A, B e C
                 verificar_fraude_tipo_A(inicio,atual,numeros_cartoes[i],arquivo_temp);
-                verificar_fraude_tipo_B(inicio,atual,arquivo_temp);
+                verificar_fraude_tipo_B(inicio,atual,&mes_cache,&ano_cache,&soma_cache,&qtd_cache,arquivo_temp) ;
                 verificar_fraude_tipo_C(atual,arquivo_temp);
         }
 

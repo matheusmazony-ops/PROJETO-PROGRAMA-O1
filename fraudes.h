@@ -28,7 +28,7 @@ DataHora epoch_para_data(int64_t epoch);
 
 void verificar_fraude_tipo_A(NoTransacao *inicio, NoTransacao *atual, const char *numero_cartao, FILE *arquivo_temp);
 
-void verificar_fraude_tipo_B(NoTransacao *inicio, NoTransacao *atual, FILE *arquivo_temp);
+void verificar_fraude_tipo_B(NoTransacao *inicio, NoTransacao *atual, int *mes_cache, int *ano_cache, double *soma_cache, int *qtd_cache, FILE *arquivo_temp);
 
 void verificar_fraude_tipo_C(NoTransacao *atual,FILE *arquivo_temp);
 
