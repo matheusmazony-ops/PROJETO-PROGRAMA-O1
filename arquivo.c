@@ -6,6 +6,8 @@
 #include <stdint.h>
 #include <math.h>
 
+#define NUM_CATEGORIAS 14
+
 // ARQUIVO PARA LER A TABELA HASH E ARMAZENAR OS CARTÕES NOS DEVIDOS ARQUIVOS //
 
 void ler_numeros_cartoes(Tabela_hash *tabela,char numeros_cartoes[tam_tabela][50],int *quantidade_cartoes){
@@ -96,8 +98,6 @@ void preencher_arquivos(Tabela_hash *tabela,char numeros_cartoes[tam_tabela][50]
         fclose(arquivo_temp);
     }
 }
-
-#define NUM_CATEGORIAS 14
 
 static const char *nomes_categorias[NUM_CATEGORIAS + 1] = {
     "", "entertainment", "food_dining", "gas_transport", "grocery_net",
