@@ -31,7 +31,7 @@ int funcao_hash(const char *numero_cartao) {
 
 Tabela_hash* ler_arquivo_e_preencher_tabela(Tabela_hash* tabela,int *quantidade_cartoes_lidos,char arquivos_lidos[tam_tabela][50]) {
 
-    printf("\nDigite o nome do arquivo que deseja ler (*OBS:Apenas o nome , sem o seu formato): ");
+    printf("\nDigite o nome do arquivo que deseja ler (*OBS:Apenas o nome , sem o seu formato):\n");
     scanf("%s",arquivos_lidos[*quantidade_cartoes_lidos]);
 
     char arquivo_lido_temp[50];

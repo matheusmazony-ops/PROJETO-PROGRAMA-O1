@@ -39,10 +39,6 @@ int main(){
 
                 preencher_arquivos(tabela, numeros_cartoes, quantidade_cartoes);
 
-                /*for (int i=0;i<quantidade_cartoes;i++){
-                        printf("Cartao [%d] : %s\n",i,numeros_cartoes[i]);
-                    }
-                */
                 break;
             case 2:
                 relatorio_cartao(tabela);
