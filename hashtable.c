@@ -29,26 +29,27 @@ int funcao_hash(const char *numero_cartao) {
     return codigo % tam_tabela;
 }
 
-Tabela_hash* ler_arquivo_e_preencher_tabela(Tabela_hash* tabela,int *quantidade_cartoes_lidos,char arquivos_lidos[tam_tabela][50]) {
+Tabela_hash* ler_arquivo_e_preencher_tabela(Tabela_hash* tabela, int *quantidade_cartoes_lidos, char arquivos_lidos[max_cartoes][50]) {
 
-    printf("\nDigite o nome do arquivo que deseja ler (*OBS:Apenas o nome , sem o seu formato):\n");
-    scanf("%s",arquivos_lidos[*quantidade_cartoes_lidos]);
+    printf("\nDigite o nome do arquivo que deseja ler (*OBS: Apenas o nome, sem o seu formato):\n");
+    scanf("%s", arquivos_lidos[*quantidade_cartoes_lidos]);
 
     char arquivo_lido_temp[50];
-    snprintf(arquivo_lido_temp,sizeof(arquivo_lido_temp),"%s.csv",arquivos_lidos[*quantidade_cartoes_lidos]);
+    snprintf(arquivo_lido_temp, sizeof(arquivo_lido_temp), "%s.csv", arquivos_lidos[*quantidade_cartoes_lidos]);
 
-    for (int i=0;i<*quantidade_cartoes_lidos;i++){
-        if (strcmp(arquivos_lidos[i],arquivo_lido_temp)==0){
+    // Verifica se o arquivo já foi lido anteriormente
+    for (int i = 0; i < *quantidade_cartoes_lidos; i++){
+        if (strcmp(arquivos_lidos[i], arquivo_lido_temp) == 0){
             printf("\nO arquivo ja foi lido anteriormente!\n");
             return tabela;
         }
     }
 
-    strcpy(arquivos_lidos[*quantidade_cartoes_lidos],arquivo_lido_temp);
+    strcpy(arquivos_lidos[*quantidade_cartoes_lidos], arquivo_lido_temp);
 
-    FILE *arquivocsv=fopen(arquivo_lido_temp,"r");
+    FILE *arquivocsv = fopen(arquivo_lido_temp, "r");
 
-    if (arquivocsv==NULL){
+    if (arquivocsv == NULL){
         printf("\nErro ao abrir o arquivo, verifique se o nome do arquivo esta correto!\n\n");
         return tabela;
     }
@@ -60,13 +61,10 @@ Tabela_hash* ler_arquivo_e_preencher_tabela(Tabela_hash* tabela,int *quantidade_
     short categoria;
     float valor;
     char genero;
-    double latitude_residencia;
-    double longitude_residencia;
-    double latitude_compra;
-    double longitude_compra;
+    double latitude_residencia, longitude_residencia;
+    double latitude_compra, longitude_compra;
 
     char cabecalho[100];
-    // O '\n' no final limpa a quebra de linha do buffer
     fscanf(arquivocsv, "%[^\n]\n", cabecalho);
 
     while (fscanf(arquivocsv, " %ld,%31[^,],%hd,%f ,%c,%lf,%lf,%lf,%lf",
@@ -80,10 +78,61 @@ Tabela_hash* ler_arquivo_e_preencher_tabela(Tabela_hash* tabela,int *quantidade_
                   &latitude_compra,
                   &longitude_compra) == 9) {
 
+        int indice = funcao_hash(numero_cartao);
+
+        // 1. VERIFICA SE O CARTÃO JÁ EXISTE NA TABELA HASH
+        int cartao_existe = 0;
+        NoTransacao *temp = tabela->tabela_hash[indice];
+
+        while (temp != NULL) {
+            if (strcmp(numero_cartao, temp->numero_cartao) == 0) {
+                cartao_existe = 1;
+                break;
+            }
+            temp = temp->proximo;
+        }
+
+        // 2. SE FOR UM CARTÃO NOVO, VERIFICA SE O LIMITE DE 75 JÁ FOI ALCANÇADO
+        if (cartao_existe == 0) {
+            int total_cartoes_unicos = 0;
+
+            for (int gaveta = 0; gaveta < tam_tabela; gaveta++) {
+                NoTransacao *no_atual = tabela->tabela_hash[gaveta];
+
+                while (no_atual != NULL) {
+                    int ja_existe = 0;
+                    NoTransacao *no_comparacao = tabela->tabela_hash[gaveta];
+
+                    // Compara o nó atual com os anteriores da mesma gaveta para não contar duplicados
+                    while (no_comparacao != no_atual) {
+                        if (strcmp(no_comparacao->numero_cartao, no_atual->numero_cartao) == 0) {
+                            ja_existe = 1;
+                            break;
+                        }
+                        no_comparacao = no_comparacao->proximo;
+                    }
+
+                    // Se NÃO for duplicado na gaveta, incrementa a contagem de únicos
+                    if (ja_existe == 0) {
+                        total_cartoes_unicos++;
+                    }
+                    
+                    no_atual = no_atual->proximo;
+                }
+            }
+
+            // Se já atingiu 75 cartões únicos na memória, descarta essa nova transação
+            if (total_cartoes_unicos >= max_cartoes) {
+                continue; // Pula para a próxima linha do CSV sem alocar nó na Hash
+            }
+        }
+
+        // 3. SE O CARTÃO JÁ EXISTE OU AINDA HÁ VAGA, ALOCA E INSERE O NÓ
         NoTransacao *novo = (NoTransacao*) malloc(sizeof(NoTransacao));
 
         if (novo == NULL) {
             puts("Erro de memória ao alocar nó!");
+            fclose(arquivocsv);
             return tabela;
         }
 
@@ -97,18 +146,15 @@ Tabela_hash* ler_arquivo_e_preencher_tabela(Tabela_hash* tabela,int *quantidade_
         novo->latitude_compra = latitude_compra;
         novo->longitude_compra = longitude_compra;
 
-        int indice = funcao_hash(numero_cartao);
-
         novo->proximo = tabela->tabela_hash[indice];
         tabela->tabela_hash[indice] = novo;
     }
-
-    printf("\nArquivo lido com sucesso!\n\n");
 
     fclose(arquivocsv);
 
     return tabela;
 }
+
 
 void ordenar_gavetas_tabela_hash(Tabela_hash *tabela,char numeros_cartoes[tam_tabela][50],int quantidade_cartoes){
 

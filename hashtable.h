@@ -4,7 +4,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define tam_tabela 1009
+#define tam_tabela  50021 // GAVETAS DA TABELA HASH
+#define max_cartoes 10000   // QUANTIDADE MAXIMA DE CARTOES DO PROGRAMA
+#define max_arquivos 50 // QUANTIDADE MAXIMA DE ARQUIVOS LIDOS NO PROGRAMA
 
 typedef struct noTransacao{
     long data;

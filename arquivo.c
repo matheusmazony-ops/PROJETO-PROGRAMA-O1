@@ -10,18 +10,36 @@
 
 // ARQUIVO PARA LER A TABELA HASH E ARMAZENAR OS CARTÕES NOS DEVIDOS ARQUIVOS //
 
-void ler_numeros_cartoes(Tabela_hash *tabela,char numeros_cartoes[tam_tabela][50],int *quantidade_cartoes){
-    // FUNCAO QUE LER AS GAVETAS DA TABELA HASH PARA ARMAZENAR EM UMA MATRIZ OS NUMEROS DOS CARTOES
-
+void ler_numeros_cartoes(Tabela_hash *tabela, char numeros_cartoes[max_cartoes][50], int *quantidade_cartoes){
     for (int i = 0 ; i < tam_tabela ; i++){
-        if (tabela -> tabela_hash[i] != NULL){
-            strcpy(numeros_cartoes[*quantidade_cartoes],tabela->tabela_hash[i]->numero_cartao);
-            (*quantidade_cartoes)++;
-        }
-    }
+        NoTransacao *atual = tabela->tabela_hash[i];
 
-    if (*quantidade_cartoes > tam_tabela){
-        printf("Ha mais cartoes do que a memoria permite!\nSó foram armazenados %d cartoes\n", (*quantidade_cartoes));
+        while (atual != NULL) {
+            // Verifica se o número deste cartão já está cadastrado no vetor
+            int ja_existe = 0;
+            for (int j = 0; j < *quantidade_cartoes; j++) {
+                if (strcmp(numeros_cartoes[j], atual->numero_cartao) == 0) {
+                    ja_existe = 1;
+                    break;
+                }
+            }
+
+            // Se for um cartão novo:
+            if (ja_existe == 0) {
+                // VERIFICAÇÃO DOS 75 CARTÕES: Se atingiu 75, trava a adição!
+                if (*quantidade_cartoes >= max_cartoes) {
+                    printf("\n[AVISO] Limite maximo de %d cartoes unicos atingido!\n", max_cartoes);
+                    printf("Novos cartoes alem dos %d primeiros serao ignorados.\n", max_cartoes);
+                    return; // Interrompe a busca de novos cartões
+                }
+                
+                // Salva o cartão no vetor
+                strcpy(numeros_cartoes[*quantidade_cartoes], atual->numero_cartao);
+                (*quantidade_cartoes)++;
+            }
+
+            atual = atual->proximo;
+        }
     }
 }
 
