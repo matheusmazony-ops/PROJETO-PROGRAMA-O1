@@ -3,6 +3,7 @@
 #include "fraudes.h"
 #include "arquivo.h"
 #include "interface.h"
+#include "relatorio.h"
 
 
 int main(){
