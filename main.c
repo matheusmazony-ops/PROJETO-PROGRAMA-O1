@@ -4,6 +4,7 @@
 #include "arquivo.h"
 #include "interface.h"
 #include "fatura_pdf.h"
+#include "relatorio.h"
 
 
 int main(){
@@ -31,16 +32,16 @@ int main(){
                 break;
             }
             case 1: {
-                // Se já temos 75 cartões cadastrados, nem adianta ler mais arquivos para cadastrar cartões novos
+
+                // Verifica se já atingiu o limite e avisa o utilizador
                 if (quantidade_cartoes >= max_cartoes) {
-                    printf("\n[ERRO] A memoria ja esta cheia com o limite maximo de %d cartoes!\n\n", max_cartoes);
-                    break;
+                    printf("\n[AVISO] Limite de %d cartões atingido! Cartões inéditos serão ignorados, mas atualizações para cartões existentes serão salvas.\n\n", max_cartoes);
                 }
 
                 int qtd_arquivos_antes = quantidade_arquivos_lidos;
 
                 // 1. Lê o arquivo CSV e insere as transações na Tabela Hash
-                tabela = ler_arquivo_e_preencher_tabela(tabela, &quantidade_arquivos_lidos, arquivos_lidos);
+                tabela = ler_arquivo_e_preencher_tabela(tabela,&quantidade_cartoes, &quantidade_arquivos_lidos, arquivos_lidos);
 
                 // Se o arquivo foi lido com sucesso (a quantidade de arquivos lidos aumentou):
                 if (quantidade_arquivos_lidos > qtd_arquivos_antes) {
@@ -48,7 +49,7 @@ int main(){
                     // Reseta o contador para re-mapear os cartões únicos atualizados
                     quantidade_cartoes = 0;
 
-                    // 2. Extrai os cartões únicos respeitando a trava de 75 cartões
+                    // 2. Extrai os cartões únicos respeitando a trava de cartões
                     ler_numeros_cartoes(tabela, numeros_cartoes, &quantidade_cartoes);
 
                     // 3. Processa apenas os cartões que foram registrados (no máximo 75)

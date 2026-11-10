@@ -29,8 +29,13 @@ int funcao_hash(const char *numero_cartao) {
     return codigo % tam_tabela;
 }
 
-Tabela_hash* ler_arquivo_e_preencher_tabela(Tabela_hash* tabela, int *quantidade_cartoes_lidos, char arquivos_lidos[max_cartoes][50]) {
+Tabela_hash* ler_arquivo_e_preencher_tabela(Tabela_hash* tabela, int *quantidade_cartoes_lidos,int *quantidade_arquivos_lidos, char arquivos_lidos[max_cartoes][50]) {
 
+    // 1. Trava de segurança: impede ler mais de 50 ficheiros
+    if (*quantidade_arquivos_lidos >= 50) {
+        printf("\n[AVISO] Limite máximo de 50 arquivos lidos já foi atingido!\n\n");
+        return tabela; // Sai da função imediatamente sem alterar a quantidade
+    }
     printf("\nDigite o nome do arquivo que deseja ler (*OBS: Apenas o nome, sem o seu formato):\n");
     scanf("%s", arquivos_lidos[*quantidade_cartoes_lidos]);
 
@@ -44,6 +49,8 @@ Tabela_hash* ler_arquivo_e_preencher_tabela(Tabela_hash* tabela, int *quantidade
             return tabela;
         }
     }
+
+    (*quantidade_arquivos_lidos)++;
 
     strcpy(arquivos_lidos[*quantidade_cartoes_lidos], arquivo_lido_temp);
 
@@ -92,7 +99,7 @@ Tabela_hash* ler_arquivo_e_preencher_tabela(Tabela_hash* tabela, int *quantidade
             temp = temp->proximo;
         }
 
-        // 2. SE FOR UM CARTÃO NOVO, VERIFICA SE O LIMITE DE 75 JÁ FOI ALCANÇADO
+        // 2. SE FOR UM CARTÃO NOVO, VERIFICA SE O LIMITE DE 10.000 JÁ FOI ALCANÇADO
         if (cartao_existe == 0) {
             int total_cartoes_unicos = 0;
 
@@ -121,7 +128,7 @@ Tabela_hash* ler_arquivo_e_preencher_tabela(Tabela_hash* tabela, int *quantidade
                 }
             }
 
-            // Se já atingiu 75 cartões únicos na memória, descarta essa nova transação
+            // Se já atingiu 10.0000 cartões únicos na memória, descarta essa nova transação
             if (total_cartoes_unicos >= max_cartoes) {
                 continue; // Pula para a próxima linha do CSV sem alocar nó na Hash
             }
