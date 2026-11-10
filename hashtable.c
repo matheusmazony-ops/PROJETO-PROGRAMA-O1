@@ -99,7 +99,7 @@ Tabela_hash* ler_arquivo_e_preencher_tabela(Tabela_hash* tabela, int *quantidade
             temp = temp->proximo;
         }
 
-        // 2. SE FOR UM CARTÃO NOVO, VERIFICA SE O LIMITE DE 75 JÁ FOI ALCANÇADO
+        // 2. SE FOR UM CARTÃO NOVO, VERIFICA SE O LIMITE DE 10.000 JÁ FOI ALCANÇADO
         if (cartao_existe == 0) {
             int total_cartoes_unicos = 0;
 
@@ -128,7 +128,7 @@ Tabela_hash* ler_arquivo_e_preencher_tabela(Tabela_hash* tabela, int *quantidade
                 }
             }
 
-            // Se já atingiu 75 cartões únicos na memória, descarta essa nova transação
+            // Se já atingiu 10.0000 cartões únicos na memória, descarta essa nova transação
             if (total_cartoes_unicos >= max_cartoes) {
                 continue; // Pula para a próxima linha do CSV sem alocar nó na Hash
             }

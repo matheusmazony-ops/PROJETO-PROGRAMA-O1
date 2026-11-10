@@ -27,6 +27,7 @@ static const char *nomes_categorias[NUM_CATEGORIAS + 1] = {
     "shopping_pos", 
     "travel"
 };
+
 void relatorio_cartao(Tabela_hash *tabela){
     char numero[32];
     printf("\nDigite o numero do cartao: ");
