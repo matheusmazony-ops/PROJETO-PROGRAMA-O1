@@ -31,11 +31,6 @@ int main(){
                 break;
             }
             case 1: {
-                // Se já temos 75 cartões cadastrados, nem adianta ler mais arquivos para cadastrar cartões novos
-                if (quantidade_cartoes >= max_cartoes) {
-                    printf("\n[ERRO] A memoria ja esta cheia com o limite maximo de %d cartoes!\n\n", max_cartoes);
-                    break;
-                }
 
                 int qtd_arquivos_antes = quantidade_arquivos_lidos;
 
