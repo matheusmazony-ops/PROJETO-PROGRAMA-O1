@@ -36,11 +36,11 @@ int main(){
                 if (quantidade_cartoes >= max_cartoes) {
                     printf("\n[AVISO] Limite de %d cartões atingido! Cartões inéditos serão ignorados, mas atualizações para cartões existentes serão salvas.\n\n", max_cartoes);
                 }
-                
+
                 int qtd_arquivos_antes = quantidade_arquivos_lidos;
 
                 // 1. Lê o arquivo CSV e insere as transações na Tabela Hash
-                tabela = ler_arquivo_e_preencher_tabela(tabela, &quantidade_arquivos_lidos, arquivos_lidos);
+                tabela = ler_arquivo_e_preencher_tabela(tabela,&quantidade_cartoes, &quantidade_arquivos_lidos, arquivos_lidos);
 
                 // Se o arquivo foi lido com sucesso (a quantidade de arquivos lidos aumentou):
                 if (quantidade_arquivos_lidos > qtd_arquivos_antes) {
