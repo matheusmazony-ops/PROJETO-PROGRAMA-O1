@@ -48,7 +48,7 @@ int main(){
                     // Reseta o contador para re-mapear os cartões únicos atualizados
                     quantidade_cartoes = 0; 
                     
-                    // 2. Extrai os cartões únicos respeitando a trava de 75 cartões
+                    // 2. Extrai os cartões únicos respeitando a trava de 10.000 cartões
                     ler_numeros_cartoes(tabela, numeros_cartoes, &quantidade_cartoes);
                     
                     // 3. Processa apenas os cartões que foram registrados (no máximo 75)

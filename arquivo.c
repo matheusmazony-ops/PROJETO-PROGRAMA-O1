@@ -24,7 +24,7 @@ void ler_numeros_cartoes(Tabela_hash *tabela, char numeros_cartoes[max_cartoes][
 
             // Se for um cartão novo:
             if (ja_existe == 0) {
-                // VERIFICAÇÃO DOS 75 CARTÕES: Se atingiu 75, trava a adição!
+                // VERIFICAÇÃO DOS 10.000 CARTÕES: Se atingiu 10.000, trava a adição!
                 if (*quantidade_cartoes >= max_cartoes) {
                     printf("\n[AVISO] Limite maximo de %d cartoes unicos atingido!\n", max_cartoes);
                     printf("Novos cartoes alem dos %d primeiros serao ignorados.\n", max_cartoes);
