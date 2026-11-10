@@ -8,7 +8,7 @@ int menu(){
 
     printf("\tMENU\n");
     printf("--------------------\n");
-    printf("0-Encerrar programa\n1-Carregar arquivo\n2-Relatorio de cartao\n");
+    printf("0-Encerrar programa\n1-Carregar arquivo\n2-Relatorio de cartao\n3-Gerar Fatura em PDF\n");
     printf("--------------------\n-> ");
     scanf("%d",&user);
 

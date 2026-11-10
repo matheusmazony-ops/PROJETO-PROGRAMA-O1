@@ -89,7 +89,7 @@ void verificar_fraude_tipo_B(NoTransacao *inicio, NoTransacao *atual, int *mes_c
         // Se essa condicao for aceita, o cliente fez 0 ou 1 compra no mês
         fprintf(arquivo_temp, "N,");
         return;
-    }   
+    }
 
     // Soma das outras transações
     double soma_outras = soma_fatura - atual->valor;

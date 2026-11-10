@@ -3,6 +3,7 @@
 #include "fraudes.h"
 #include "arquivo.h"
 #include "interface.h"
+#include "fatura_pdf.h"
 
 
 int main(){
@@ -43,24 +44,28 @@ int main(){
 
                 // Se o arquivo foi lido com sucesso (a quantidade de arquivos lidos aumentou):
                 if (quantidade_arquivos_lidos > qtd_arquivos_antes) {
-                    
+
                     // Reseta o contador para re-mapear os cartões únicos atualizados
-                    quantidade_cartoes = 0; 
-                    
+                    quantidade_cartoes = 0;
+
                     // 2. Extrai os cartões únicos respeitando a trava de 75 cartões
                     ler_numeros_cartoes(tabela, numeros_cartoes, &quantidade_cartoes);
-                    
+
                     // 3. Processa apenas os cartões que foram registrados (no máximo 75)
                     criar_arquivos(numeros_cartoes, quantidade_cartoes);
                     ordenar_gavetas_tabela_hash(tabela, numeros_cartoes, quantidade_cartoes);
                     preencher_arquivos(tabela, numeros_cartoes, quantidade_cartoes);
-                    
+
                     printf("\nProcessamento concluido! (%d cartoes registrados no total)\n", quantidade_cartoes);
                 }
                 break;
             }
             case 2: {
                 relatorio_cartao(tabela);
+                break;
+            }
+            case 3: {
+                gerar_fatura_pdf(tabela);
                 break;
             }
             default: {
