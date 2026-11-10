@@ -32,6 +32,11 @@ int main(){
             }
             case 1: {
 
+                // Verifica se já atingiu o limite e avisa o utilizador
+                if (quantidade_cartoes >= max_cartoes) {
+                    printf("\n[AVISO] Limite de %d cartões atingido! Cartões inéditos serão ignorados, mas atualizações para cartões existentes serão salvas.\n\n", max_cartoes);
+                }
+                
                 int qtd_arquivos_antes = quantidade_arquivos_lidos;
 
                 // 1. Lê o arquivo CSV e insere as transações na Tabela Hash
