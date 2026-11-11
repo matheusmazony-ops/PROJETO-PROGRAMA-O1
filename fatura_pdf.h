@@ -3,6 +3,6 @@
 
 #include "hashtable.h"
 
-void gerar_fatura_pdf(Tabela_hash *tabela);
+void gerar_fatura_pdf();
 
 #endif

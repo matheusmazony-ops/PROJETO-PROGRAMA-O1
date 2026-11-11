@@ -66,7 +66,7 @@ int main(){
                 break;
             }
             case 3: {
-                gerar_fatura_pdf(tabela);
+                gerar_fatura_pdf();
                 break;
             }
             default: {

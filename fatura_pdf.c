@@ -30,9 +30,7 @@ void desenhar_cabecalho_tabela(struct pdf_doc *pdf, float y) {
 }
 
 
-void gerar_fatura_pdf(Tabela_hash *tabela){
-    (void) tabela;
-
+void gerar_fatura_pdf(){
     char numero_cartao[32];
     int mes_desejado, ano_desejado;
 
@@ -119,7 +117,6 @@ void gerar_fatura_pdf(Tabela_hash *tabela){
     // Adiciona uma linha divisora
     pdf_add_line(pdf, NULL, 40, 698, 555, 698, 1, PDF_RGB(200, 200, 200));
 
-    // Tabela de transacao
     float y_pos = 675;
     desenhar_cabecalho_tabela(pdf, y_pos);
     y_pos -= 20;
