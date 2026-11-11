@@ -16,7 +16,7 @@ int main(){
         return EXIT_FAILURE;
     }
 
-    static char arquivos_lidos[tam_tabela][50];
+    static char arquivos_lidos[max_arquivos][50];
     int quantidade_arquivos_lidos=0;
 
     static char numeros_cartoes[tam_tabela][50];
