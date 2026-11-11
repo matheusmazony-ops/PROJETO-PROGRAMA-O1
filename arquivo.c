@@ -42,7 +42,7 @@ void ler_numeros_cartoes(Tabela_hash *tabela, char numeros_cartoes[max_cartoes][
 }
 
 
-void criar_arquivos(char numeros_cartoes[tam_tabela][50],int quantidade_cartoes){
+void criar_arquivos(char numeros_cartoes[max_cartoes][50],int quantidade_cartoes){
     // FUNCAO PARA CRIAR OS ARQUIVOS E DEIXAR NA MEMORIA DO DISCO
 
     char nome_arquivo[60];
@@ -66,7 +66,7 @@ void criar_arquivos(char numeros_cartoes[tam_tabela][50],int quantidade_cartoes)
 }
 
 
-void preencher_arquivos(Tabela_hash *tabela,char numeros_cartoes[tam_tabela][50],int quantidade_cartoes){
+void preencher_arquivos(Tabela_hash *tabela,char numeros_cartoes[max_cartoes][50],int quantidade_cartoes){
     for (int i =0;i<quantidade_cartoes;i++){
 
         char nome_arquivo[60];
