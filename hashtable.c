@@ -32,7 +32,7 @@ int funcao_hash(const char *numero_cartao) {
 Tabela_hash* ler_arquivo_e_preencher_tabela(Tabela_hash* tabela, int *quantidade_cartoes_lidos,int *quantidade_arquivos_lidos, char arquivos_lidos[max_cartoes][50]) {
 
     // 1. Trava de segurança: impede ler mais de 50 ficheiros
-    if (*quantidade_arquivos_lidos >= 50) {
+    if (*quantidade_arquivos_lidos >= max_arquivos) {
         printf("\n[AVISO] Limite máximo de 50 arquivos lidos já foi atingido!\n\n");
         return tabela; // Sai da função imediatamente sem alterar a quantidade
     }
