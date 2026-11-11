@@ -13,13 +13,13 @@ static const char *categorias_nomes[] = {
 
 
 void desenhar_cabecalho_tabela(struct pdf_doc *pdf, float y) {
-    // Sintaxe destinado para a interface do cabeçalho
-    // A função PDF_RGB desempenha o papel de converter cores nos textos do PDF
-    // O NULL tem a funcionalidade de apontar para a página mais recente
+    /* Os parâmetros da função consistem em: ponteiro do documento PDF; ponteiro da página apontada; posição horizontal;
+    posição vertical; largura do retângulo; altura do retângulo; espessura da linha de contorno do retângulo;
+    cor do interior do retângulo; cor da borda do contorno do retângulo */
     pdf_add_filled_rectangle(pdf, NULL, 40, y - 5, 515, 20, 0, PDF_RGB(230, 230, 230), PDF_TRANSPARENT);
 
     pdf_set_font(pdf, "Times-Roman-Bold");
-    /* Os parâmetros da função consistem em: Ponteiro do documento PDF; página apontada; texto em string para printar;
+    /* Os parâmetros da função consistem em: Ponteiro do documento PDF; ponteiro da página; texto em string para printar;
     tamanho da fonte; posição x e y na página; cor do texto */
     pdf_add_text(pdf, NULL, "Data / Hora (UTC)", 10, 45, y, PDF_BLACK);
     pdf_add_text(pdf, NULL, "Categoria", 10, 220, y, PDF_BLACK);
