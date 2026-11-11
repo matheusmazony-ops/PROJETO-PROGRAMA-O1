@@ -13,8 +13,8 @@ static const char *categorias_nomes[] = {
 
 
 void desenhar_cabecalho_tabela(struct pdf_doc *pdf, float y) {
-    /* Os parâmetros da funçao consistem em: ponteiro do documento PDF; ponteiro da pagina apontada; posiçao horizontal;
-    posiçao vertical; largura do retangulo; altura do retangulo; espessura da linha de contorno do retangulo;
+    /* Os parametros da funcao consistem em: ponteiro do documento PDF; ponteiro da pagina apontada; posicao horizontal;
+    posicao vertical; largura do retangulo; altura do retangulo; espessura da linha de contorno do retangulo;
     cor do interior do retangulo; cor da borda do contorno do retangulo */
     pdf_add_filled_rectangle(pdf, NULL, 40, y - 5, 515, 20, 0, PDF_RGB(230, 230, 230), PDF_TRANSPARENT);
 
@@ -25,7 +25,7 @@ void desenhar_cabecalho_tabela(struct pdf_doc *pdf, float y) {
     pdf_add_text(pdf, NULL, "Categoria", 10, 220, y, PDF_BLACK);
     pdf_add_text(pdf, NULL, "Valor (R$)", 10, 350, y, PDF_BLACK);
     pdf_add_text(pdf, NULL, "Status", 10, 480, y, PDF_BLACK);
-    // A funcao pdf_set_font foi colocado duas vezes para diferenciar entre o cabeçalho e o corpo do texto abaixo dele
+    // A funcao pdf_set_font foi colocado duas vezes para diferenciar entre o cabecalho e o corpo do texto abaixo dele
     pdf_set_font(pdf, "Times-Roman");
 }
 
