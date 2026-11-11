@@ -13,19 +13,19 @@ static const char *categorias_nomes[] = {
 
 
 void desenhar_cabecalho_tabela(struct pdf_doc *pdf, float y) {
-    /* Os parâmetros da função consistem em: ponteiro do documento PDF; ponteiro da página apontada; posição horizontal;
-    posição vertical; largura do retângulo; altura do retângulo; espessura da linha de contorno do retângulo;
-    cor do interior do retângulo; cor da borda do contorno do retângulo */
+    /* Os parâmetros da funçao consistem em: ponteiro do documento PDF; ponteiro da pagina apontada; posiçao horizontal;
+    posiçao vertical; largura do retangulo; altura do retangulo; espessura da linha de contorno do retangulo;
+    cor do interior do retangulo; cor da borda do contorno do retangulo */
     pdf_add_filled_rectangle(pdf, NULL, 40, y - 5, 515, 20, 0, PDF_RGB(230, 230, 230), PDF_TRANSPARENT);
 
     pdf_set_font(pdf, "Times-Roman-Bold");
-    /* Os parâmetros da função consistem em: Ponteiro do documento PDF; ponteiro da página; texto em string para printar;
-    tamanho da fonte; posição x e y na página; cor do texto */
+    /* Os parametros da funcao consistem em: Ponteiro do documento PDF; ponteiro da pagina; texto em string para printar;
+    tamanho da fonte; posicao x e y na pagina; cor do texto */
     pdf_add_text(pdf, NULL, "Data / Hora (UTC)", 10, 45, y, PDF_BLACK);
     pdf_add_text(pdf, NULL, "Categoria", 10, 220, y, PDF_BLACK);
     pdf_add_text(pdf, NULL, "Valor (R$)", 10, 350, y, PDF_BLACK);
     pdf_add_text(pdf, NULL, "Status", 10, 480, y, PDF_BLACK);
-    // A função pdf_set_font foi colocado duas vezes para diferenciar entre o cabeçalho e o corpo do texto abaixo dele
+    // A funcao pdf_set_font foi colocado duas vezes para diferenciar entre o cabeçalho e o corpo do texto abaixo dele
     pdf_set_font(pdf, "Times-Roman");
 }
 
@@ -95,13 +95,13 @@ void gerar_fatura_pdf(Tabela_hash *tabela){
     pdf_set_font(pdf, "Times-Roman");
     pdf_add_text(pdf, NULL, "Relatorio consolidado de Transacoes", 10, 40, 782, PDF_WHITE);
 
-    // Informações da transação
+    // Informacoes da transacao
     char buffer[128];
     pdf_set_font(pdf, "Times-Roman-Bold");
     pdf_add_text(pdf, NULL, "DETALHES DA FATURA", 12, 40, 745, PDF_RGB(24, 76, 120));
     pdf_set_font(pdf, "Times-Roman");
 
-    // A função snprintf tem o papel de formatar e gravar os dados em uma string, nesse caso, a string sobre o número do cartão
+    // A funcao snprintf tem o papel de formatar e gravar os dados em uma string, nesse caso, a string sobre o numero do cartao
     snprintf(buffer, sizeof(buffer), "Numero do cartao: %s", numero_cartao);
     pdf_add_text(pdf, NULL, buffer, 10, 40, 728, PDF_BLACK);
 
@@ -119,7 +119,7 @@ void gerar_fatura_pdf(Tabela_hash *tabela){
     // Adiciona uma linha divisora
     pdf_add_line(pdf, NULL, 40, 698, 555, 698, 1, PDF_RGB(200, 200, 200));
 
-    // Tabela de transação
+    // Tabela de transacao
     float y_pos = 675;
     desenhar_cabecalho_tabela(pdf, y_pos);
     y_pos -= 20;
@@ -136,7 +136,7 @@ void gerar_fatura_pdf(Tabela_hash *tabela){
                   &fraude_a, &fraude_b, &fraude_c) == 11){
 
             if(mes == mes_desejado && ano == ano_desejado){
-                // Cria uma nova página se Y ficar muito baixo
+                // Cria uma nova pagina se Y ficar muito baixo
                 if(y_pos < 60){
                     pdf_append_page(pdf);
                     y_pos = 800;
@@ -148,11 +148,11 @@ void gerar_fatura_pdf(Tabela_hash *tabela){
                 snprintf(buffer, sizeof(buffer), "%04d-%02d-%02d %02d:%02d", ano, mes, dia, hora, minuto);
                 pdf_add_text(pdf, NULL, buffer, 9, 45, y_pos, PDF_BLACK);
 
-                // Identifica a categoria numérica da transação
+                // Identifica a categoria numerica da transacao
                 const char *cat_nome = (categoria >= 1 && categoria <= 14) ? categorias_nomes[categoria] : "Outros";
                 pdf_add_text(pdf, NULL, cat_nome, 9, 220, y_pos, PDF_BLACK);
 
-                // Formatando a quantidade das transações
+                // Formatando a quantidade das transacoes
                 snprintf(buffer, sizeof(buffer), "R$ %.2f", valor);
                 pdf_add_text(pdf, NULL, buffer, 9, 350, y_pos, PDF_BLACK);
 
